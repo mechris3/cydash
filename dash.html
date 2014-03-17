@@ -1,0 +1,95 @@
+<html>
+	<head>
+		<link rel="shortcut icon" href="favicon.ico" />		
+		<link rel="stylesheet" href="../dojo-release-1.9.3/dijit/themes/claro/claro.css" />	
+		
+	<style type="text/css">
+		@import "../dojo-release-1.9.3/dojox/grid/resources/claroGrid.css";
+		/*Grid needs an explicit height by default*/
+#gridDiv {
+    height: 20em;
+}
+
+ .bloc { display:inline-block; vertical-align:top; overflow:hidden; border:solid grey 1px;  }
+ .bloc select { padding:10px; margin:-5px -20px -5px -5px; }
+
+.dijitButtonNode { 
+     width:100px; 
+} 
+
+	</style>
+		<script src='../dojo-release-1.9.3/dojo/dojo.js'></script>
+		<script src='libs/cyApp.js'></script>
+		<title>See Why - Dashboard</title>
+		<script>
+			
+			window.onload = function() 
+			{
+				require(["dojo/request", "dojo/json"], 
+					function(request, JSON)
+					{
+						request("data/data.json").then(
+							
+							function(data)
+							{
+								// do something with handled data
+								require(["dojo/json"], function(JSON)
+								{
+									var App=JSON.parse(data)									
+															
+									require(["dijit/layout/TabContainer", "dijit/layout/ContentPane", "dojo/domReady!"], 									
+									
+									function(TabContainer, ContentPane)
+									{
+										var tc = new TabContainer({ style: "height: 100%; width: 100%;" }, "dvMain");
+										var cp = []
+										for (var i=0; i<App.Modules.length; i++)
+										{																						
+											
+											cp[i] = new ContentPane({ title: App.Modules[i], style:"width:1000px" });											
+											tc.addChild(cp[i]);
+										}			
+																											
+										tc.startup();
+										
+										// now fire an event any modules that want to load themselves up can do so
+										require(["dojo/on", "dojo/topic"],													
+											function(on, topic)
+											{
+												var cpx=cp;
+												
+												topic.subscribe("containerRendered",
+													function()
+													{
+														
+														CYApp.Modules.ServiceConfiguration(cpx[0]);														
+														CYApp.Modules.Campaigns(cpx[1]);
+														
+													}
+												)
+												topic.publish("containerRendered");
+											});
+											tc.selectChild(cp[1]);										
+									});									
+								})
+							}, 
+							function(err)
+							{
+							// handle an error condition
+							}, 
+							function(evt)
+							{
+							// handle a progress event
+							});
+					});
+				
+				
+
+			}
+			
+	</script>
+	</head>
+	<body class="claro" style="font-family:calibri" >
+		<div id="dvMain"  />
+	</body>
+</html>

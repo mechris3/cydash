@@ -1,0 +1,15 @@
+[
+	{"label":"North America - PST (UTC-8)", "id":"PST"},
+	{"label":"North America - MST (UTC-7)", "id":"MST"},
+	{"label":"North America - PDT (UTC-7)", "id":"PDT"},
+	{"label":"North America - CST (UTC-6)", "id":"CST"},
+	{"label":"North America - CDT (UTC-5)", "id":"CDT"},
+	{"label":"North America - EST (UTC-5)", "id":"EST"},
+	{"label":"North America - EDT (UTC-4)", "id":"EDT"},					
+	{"label":"UK - GMT (UTC+0)", "id":"GMT", "selected": true },
+	{"label":"BST - GMT (UTC+0)", "id":"BST" },
+	{"label":"Europe - CET (UTC+0)", "id":"CET"},
+	{"label":"Europe - CEDT (UTC+0)", "id":"GEDT"},
+	{"label":"Europe - EET (UTC+0)", "id":"EET"},
+	{"label":"Europe - EEDT (UTC+0)", "id":"EEDT"}
+]

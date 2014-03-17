@@ -1,0 +1,11 @@
+{
+    "Modules": [
+        "Service Configuration",
+        "Campaigns",
+		"Campaign Rules",
+		"Slider Shots",
+		"Slider Shot Rules",
+		"Integration Settings",
+		"Misc. Data"
+    ]
+}
