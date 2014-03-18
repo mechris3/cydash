@@ -1,0 +1,109 @@
+<html>
+	<head>
+		<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+		<link type="text/css" rel="stylesheet" href="ConversionDashboard.css">		
+		<link rel="shortcut icon" href="favicon.ico" />		
+		<link rel="stylesheet" href="../dojo-release-1.9.3/dijit/themes/claro/claro.css" />	
+		<style type="text/css">
+			@import "../dojo-release-1.9.3/dojox/grid/resources/claroGrid.css";
+			/*Grid needs an explicit height by default*/
+			#gridDiv 
+			{
+				height: 20em;
+			}
+			.bloc { display:inline-block; vertical-align:top; overflow:hidden; border:solid grey 1px;  }
+			.bloc select { padding:10px; margin:-5px -20px -5px -5px; }
+
+			.dijitButtonNode 
+			{ 
+				width:100px; 
+			} 
+	</style>
+		<script src='../dojo-release-1.9.3/dojo/dojo.js'></script>
+		<script src='libs/cyApp.js'></script>		
+		<title>SeeWhy Conversion Dashboard</title>		
+		<script>			
+			window.onload = function() 
+			{
+				require(["dojo/request", "dojo/json"], 
+					function(request, JSON)
+					{
+						request("data/data.json").then(						
+							function(data)
+							{
+								// do something with handled data
+								require(["dojo/json"], function(JSON)
+								{
+									var App=JSON.parse(data)																								
+									require(["dijit/layout/TabContainer", "dijit/layout/ContentPane", "dojo/domReady!"], 																		
+									function(TabContainer, ContentPane)
+									{
+										var tc = new TabContainer({ style: "background-color:black;height: 600px; width: 1004px; margin-left:auto;margin-right:auto;" }, "dvMain");
+										var cp = []
+										for (var i=0; i<App.Modules.length; i++)
+										{																						
+											
+											cp[i] = new ContentPane({ title: App.Modules[i], style:"width:1000px;background-color:black" });											
+											tc.addChild(cp[i]);
+										}			
+																											
+										tc.startup();
+										
+										// now fire an event any modules that want to load themselves up can do so
+										require(["dojo/on", "dojo/topic"],													
+											function(on, topic)
+											{
+												var cpx=cp;
+												
+												topic.subscribe("containerRendered",
+													function()
+													{
+														
+														CYApp.Modules.ServiceConfiguration(cpx[0]);														
+														CYApp.Modules.Campaigns(cpx[1]);
+														
+													}
+												)
+												topic.publish("containerRendered");
+											});
+											tc.selectChild(cp[1]);										
+									});									
+								})
+							}, 
+							function(err)
+							{
+							// handle an error condition
+							}, 
+							function(evt)
+							{
+							// handle a progress event
+							});
+					});
+				
+				
+
+			}
+			
+	</script>		
+
+		
+	</head>
+  <body class="claro" style="font-family:calibri" >
+
+    <div align="center" id="SeeWhyLogo" style="position:fixed;z-index:-1"><img src='conversiondashboard/SeeWhyLogo.jpg' align='center'></div>	
+    <div align="center" id="SeeWhyBanner"><img src='conversiondashboard/SeeWhyBanner.jpg' align='center'></div>
+    <div align="center" id="SeeWhyConversionDashboard"></div>
+	<div id="dvMain" style="width:700px"  />
+
+    <!-- RECOMMENDED if your web app will not function without JavaScript enabled -->
+    <noscript>
+      <div style="width: 22em; position: absolute; left: 50%; margin-left: -11em; color: red; background-color: white; border: 1px solid red; padding: 4px; font-family: sans-serif">
+        Your web browser must have JavaScript enabled
+        in order for this application to display correctly.
+      </div>
+    </noscript>
+
+  </body>
+</html>
+
+
